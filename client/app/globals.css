@@ -2,25 +2,110 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b1120;
+  --wave-red: #ff6f61;
+  --wave-coral: #ff8a72;
+  --wave-teal: #3fd7c4;
+  --wave-mint: #7cf3e4;
+  --wave-blue: #57b3ff;
+  --wave-navy: #1f2b5a;
+  --wave-ink: #0b1221;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-space);
+  --font-display: var(--font-syne);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: rgba(15, 23, 42, 0.12);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(
+      110deg,
+      var(--wave-red),
+      var(--wave-teal),
+      var(--wave-blue)
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(15, 23, 42, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.06) 1px,
+        transparent 1px
+      );
+    background-size: 90px 90px;
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 40px 120px -80px rgba(15, 23, 42, 0.5);
+  }
+
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+  }
+
+  .card-3d:hover {
+    transform: translateY(-8px) rotateX(6deg) rotateY(-4deg);
+    box-shadow: 0 40px 80px -50px rgba(15, 23, 42, 0.45);
+  }
+
+  .glow-ring {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.6),
+      0 50px 140px -70px rgba(31, 43, 90, 0.7);
+  }
+
+  .animate-float-slow {
+    animation: float 10s ease-in-out infinite;
+  }
+
+  .animate-float-slower {
+    animation: float 14s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
 }

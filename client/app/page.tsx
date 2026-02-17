@@ -4,109 +4,130 @@ import { useEffect, useRef } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  ArrowRight,
+  CalendarCheck,
+  MapPin,
+  MessageCircle,
+  Play,
+  Sparkles,
+  Users,
+  Wallet,
+} from "lucide-react";
 
-const moodChips = [
+const moodStrip = [
   "neon ramen",
-  "cozy corner",
-  "lo-fi cafe",
   "sunset gelato",
-  "arcade nostalgia",
+  "late-night vinyl",
   "rooftop breeze",
-  "vinyl lounge",
-  "late-night dessert",
-  "street art crawl",
-  "night market",
+  "cozy bookstore",
+  "midnight market",
+  "gallery hop",
+  "sushi sprint",
+  "arcade nostalgia",
+  "quiet wine bar",
+  "street tacos",
+  "harbor walk",
 ];
 
-const features = [
+const heroStats = [
+  { label: "Avg plan time", value: "2.8 min" },
+  { label: "Live votes", value: "1.4k/hr" },
+  { label: "Crew sweet spot", value: "4-6 friends" },
+];
+
+const featureCards = [
   {
-    title: "Mood-first discovery",
+    title: "Vibe intelligence",
     description:
-      "Pick a vibe and GoWavy surfaces nearby spots that match the energy, not just the category.",
+      "Tell us the mood and GoWavy maps it to places that match energy, price, and distance.",
+    icon: Sparkles,
     accent: "from-[var(--wave-red)] to-[var(--wave-teal)]",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path
-          d="M12 3v5m0 0l3-3m-3 3l-3-3m9 9a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
   },
   {
-    title: "Instant crew sync",
+    title: "Crew sync",
     description:
-      "Create a shared board, vote on options, and lock plans without a 40-message thread.",
+      "Invite the group, collect reactions, and watch consensus build in real time.",
+    icon: Users,
     accent: "from-[var(--wave-teal)] to-[var(--wave-blue)]",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path
-          d="M7 13a4 4 0 1 1 6.6-3M14.5 15.5a4 4 0 1 0 2.2-7.4M5 20c.6-2.5 2.6-4 5-4s4.4 1.5 5 4M13.8 20c.3-1.2 1.3-2 2.7-2 1.3 0 2.4.8 2.7 2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
   },
   {
     title: "Budget guardrails",
     description:
-      "Set a spend limit and we keep every suggestion inside your comfort zone.",
+      "Set a hard cap and we only suggest options that keep the whole crew comfy.",
+    icon: Wallet,
     accent: "from-[var(--wave-blue)] to-[var(--wave-navy)]",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path
-          d="M7 7h10M7 12h6m-6 5h10M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5v-13Z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+  },
+  {
+    title: "Walkable radius",
+    description:
+      "Lock the distance and swap to the fastest, most fun path for everyone.",
+    icon: MapPin,
+    accent: "from-[var(--wave-coral)] to-[var(--wave-red)]",
   },
 ];
 
-const steps = [
+const flowSteps = [
   {
-    title: "Drop your mood",
-    detail:
-      "Pick a vibe like late-night ramen or sunset gelato and set a distance cap.",
+    title: "Set the wave",
+    description: "Pick a vibe, radius, and budget in under 10 seconds.",
+    meta: "Mood + distance + cap",
   },
   {
-    title: "Bring the crew",
-    detail:
-      "Invite friends, sync availability, and get instant votes on what feels right.",
+    title: "Gather the crew",
+    description: "Friends vote with taps, reacts, and quick notes.",
+    meta: "Live collaboration",
   },
   {
     title: "Lock the plan",
-    detail:
-      "One tap shares the itinerary, budget split, and a live arrival tracker.",
+    description: "Share the itinerary, split costs, and track arrivals.",
+    meta: "One-tap send",
   },
 ];
 
-const stats = [
-  { label: "Avg plan time", value: "3 min" },
-  { label: "Mood tags", value: "150+" },
-  { label: "Collab votes", value: "Real-time" },
+const planTiles = [
+  { title: "Neon ramen", meta: "12 min walk � $$", votes: "76% yes" },
+  { title: "Midnight market", meta: "18 min walk � $", votes: "64% yes" },
+  { title: "Vinyl lounge", meta: "15 min walk � $$$", votes: "58% yes" },
+];
+
+const testimonials = [
+  {
+    quote:
+      "GoWavy turned a 40-message thread into a plan in under three minutes.",
+    name: "Maya L.",
+    role: "Austin, TX",
+  },
+  {
+    quote:
+      "The budget guardrail kept us honest without killing the vibe. Huge win.",
+    name: "Jordan P.",
+    role: "Toronto, ON",
+  },
+  {
+    quote:
+      "We finally stopped debating and just went. The crew board is magic.",
+    name: "Kei R.",
+    role: "Seattle, WA",
+  },
 ];
 
 export default function Home() {
@@ -130,15 +151,15 @@ export default function Home() {
       if (!rootRef.current) return;
 
       ctx = gsap.context(() => {
-        gsap.utils.toArray<HTMLElement>("[data-animate]").forEach((element, i) => {
+        gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element, i) => {
           gsap.fromTo(
             element,
-            { y: 36, opacity: 0 },
+            { y: 32, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 1,
-              delay: i * 0.06,
+              duration: 0.9,
+              delay: i * 0.08,
               ease: "power3.out",
               scrollTrigger: {
                 trigger: element,
@@ -149,8 +170,8 @@ export default function Home() {
         });
 
         gsap.to(".hero-orb", {
-          yPercent: -14,
-          rotate: 16,
+          yPercent: -12,
+          rotate: 10,
           scrollTrigger: {
             trigger: ".hero",
             start: "top top",
@@ -159,30 +180,19 @@ export default function Home() {
           },
         });
 
-        gsap.to(".hero-wave", {
-          yPercent: 18,
-          rotate: -12,
+        gsap.to(".ticker-track", {
+          xPercent: -20,
           scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-
-        gsap.to(".scroll-track", {
-          xPercent: -24,
-          scrollTrigger: {
-            trigger: ".scroll-track",
+            trigger: ".ticker-track",
             start: "top bottom",
             end: "bottom top",
             scrub: true,
           },
         });
 
-        gsap.to(".floating-card", {
-          y: -24,
-          rotate: 6,
+        gsap.to(".float-card", {
+          y: -18,
+          rotate: 5,
           scrollTrigger: {
             trigger: ".hero",
             start: "top 80%",
@@ -201,11 +211,12 @@ export default function Home() {
   return (
     <div
       ref={rootRef}
-      className="relative min-h-screen overflow-x-hidden bg-white text-slate-900"
+      className="relative min-h-screen overflow-x-hidden bg-[#fbf8f4] text-slate-900"
     >
-      <div className="pointer-events-none absolute inset-0 bg-grid opacity-40" />
-      <div className="pointer-events-none absolute -top-28 right-[-10%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_transparent_70%)] opacity-70 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-[-12%] h-[440px] w-[440px] rounded-full bg-[radial-gradient(circle_at_bottom,_var(--wave-mint),_transparent_70%)] opacity-70 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-35" />
+      <div className="pointer-events-none absolute -top-32 right-[-10%] h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_transparent_70%)] opacity-70 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-44 left-[-12%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_bottom,_var(--wave-mint),_transparent_70%)] opacity-70 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(87,179,255,0.25),_transparent_65%)] blur-3xl" />
 
       <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-16">
         <div className="flex items-center gap-3">
@@ -215,7 +226,7 @@ export default function Home() {
               GoWavy
             </p>
             <p className="text-sm font-semibold text-slate-900">
-              Find your vibe
+              Plan the night fast
             </p>
           </div>
         </div>
@@ -223,33 +234,33 @@ export default function Home() {
           <a className="transition hover:text-slate-900" href="#features">
             Features
           </a>
-          <a className="transition hover:text-slate-900" href="#how">
-            How it works
+          <a className="transition hover:text-slate-900" href="#flow">
+            Flow
           </a>
-          <a className="transition hover:text-slate-900" href="#collab">
-            Collab
+          <a className="transition hover:text-slate-900" href="#board">
+            Crew board
           </a>
           <a className="transition hover:text-slate-900" href="#waitlist">
             Waitlist
           </a>
         </nav>
-        <Button className="hidden lg:inline-flex" variant="glow">
-          Join waitlist
-        </Button>
+        <div className="hidden items-center gap-3 lg:flex">
+          <Button variant="ghost">Sign in</Button>
+          <Button variant="glow">Join waitlist</Button>
+        </div>
       </header>
 
       <main className="relative z-10">
-        <section className="hero mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-8 lg:grid-cols-[1.1fr_0.9fr] lg:pt-20">
-          <div data-animate>
-            <Badge className="mb-6">Early access</Badge>
+        <section className="hero mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-6 lg:grid-cols-[1.05fr_0.95fr] lg:pt-20">
+          <div data-reveal>
+            <Badge className="mb-6">Private beta</Badge>
             <h1 className="text-4xl leading-[1.05] md:text-6xl">
-              Find a hangout that matches your{" "}
-              <span className="text-gradient">mood</span> and your crew.
+              Turn any group chat into a plan in minutes. Ride the{" "}
+              <span className="text-gradient">GoWavy</span>.
             </h1>
             <p className="mt-6 text-lg text-slate-600">
-              GoWavy is the vibe-first platform for picking nearby spots. Set a
-              mood, sync with friends, lock a budget, and get out the door in
-              minutes.
+              GoWavy is the vibe-first planner for nights out. Drop a mood,
+              invite the crew, keep the budget tight, and get moving fast.
             </p>
             <form
               className="mt-8 flex w-full flex-col gap-3 sm:flex-row"
@@ -264,7 +275,47 @@ export default function Home() {
                 Join the waitlist
               </Button>
             </form>
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Play className="h-4 w-4" />
+                    See the flow
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>See the GoWavy flow</DialogTitle>
+                    <DialogDescription>
+                      A quick look at how crews move from vibe to venue.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {flowSteps.map((step, index) => (
+                      <div
+                        key={step.title}
+                        className="rounded-2xl border border-slate-200/70 bg-white/80 p-4"
+                      >
+                        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                          Step {String(index + 1).padStart(2, "0")}
+                        </p>
+                        <p className="mt-2 text-sm font-semibold text-slate-900">
+                          {step.title}
+                        </p>
+                        <p className="mt-2 text-xs text-slate-600">
+                          {step.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <DialogFooter showCloseButton>
+                    <Button variant="glow" className="gap-2">
+                      Request beta
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <span className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[var(--wave-teal)]" />
                 City-by-city rollouts
@@ -273,39 +324,88 @@ export default function Home() {
                 <span className="h-2 w-2 rounded-full bg-[var(--wave-red)]" />
                 Invite-only beta
               </span>
-              <span className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[var(--wave-blue)]" />
-                Budget-safe plans
-              </span>
+            </div>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {heroStats.map((stat) => (
+                <Card
+                  key={stat.label}
+                  className="gap-2 border-slate-200/70 bg-white/70 py-4"
+                >
+                  <CardContent className="px-4">
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                      {stat.label}
+                    </p>
+                    <p className="mt-2 text-lg font-semibold text-slate-900">
+                      {stat.value}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
 
-          <div className="relative flex items-center justify-center" data-animate>
-            <div className="relative h-[360px] w-[360px] perspective-1200">
-              <div className="hero-orb absolute inset-0 rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_var(--wave-teal)_45%,_var(--wave-navy)_90%)] glow-ring animate-float-slow" />
-              <div className="hero-wave absolute inset-10 rounded-[999px] bg-[conic-gradient(from_90deg,_rgba(255,255,255,0.2),_rgba(63,215,196,0.5),_rgba(87,179,255,0.35),_rgba(255,255,255,0.1))] blur-sm" />
-              <div className="absolute inset-16 rounded-full border border-white/70 bg-white/40 backdrop-blur" />
-              <div className="absolute -bottom-10 left-1/2 h-20 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(31,43,90,0.35),_transparent_70%)] opacity-60 blur-2xl" />
-            </div>
-
-            <div className="floating-card absolute right-[-6%] top-8 hidden w-48 rounded-3xl border border-white/80 bg-white/70 p-4 text-xs text-slate-600 shadow-[0_20px_60px_-40px_rgba(12,18,40,0.7)] backdrop-blur lg:block">
+          <div className="relative flex items-center justify-center" data-reveal>
+            <div className="hero-orb absolute inset-4 rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_var(--wave-teal)_45%,_var(--wave-navy)_90%)] glow-ring animate-float-slower" />
+            <Card className="relative z-10 w-full max-w-md border-white/60 bg-white/80 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)] backdrop-blur">
+              <CardHeader className="pb-2">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                      Tonight's wave
+                    </p>
+                    <CardTitle className="mt-2 text-xl">Crew board</CardTitle>
+                    <CardDescription>8 friends synced � 4 voting</CardDescription>
+                  </div>
+                  <Badge className="bg-white/80 text-slate-500">
+                    Live
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {planTiles.map((tile) => (
+                  <div
+                    key={tile.title}
+                    className="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3"
+                  >
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {tile.title}
+                      </p>
+                      <p className="text-xs text-slate-500">{tile.meta}</p>
+                    </div>
+                    <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-slate-700">
+                      {tile.votes}
+                    </span>
+                  </div>
+                ))}
+              </CardContent>
+              <CardFooter className="border-t border-slate-200/70 pt-4">
+                <div className="flex w-full items-center justify-between text-sm text-slate-600">
+                  <span>Meet at 7:30 PM</span>
+                  <Button variant="outline" size="sm">
+                    Lock plan
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+            <div className="float-card absolute -right-6 top-6 hidden w-44 rounded-3xl border border-white/70 bg-white/80 p-4 text-xs text-slate-600 shadow-[0_20px_60px_-40px_rgba(12,18,40,0.7)] backdrop-blur lg:block">
               <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                Tonight
+                Next
               </p>
               <p className="mt-2 text-sm font-semibold text-slate-900">
-                Neon ramen + stroll
+                Ramen + arcade
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[var(--wave-red)]" />
-                <span>5 spots within 2 miles</span>
+                <span>2 miles away</span>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-6 pb-16" data-animate>
-          <div className="scroll-track flex w-[160%] flex-nowrap gap-3 text-sm text-slate-600">
-            {moodChips.map((mood) => (
+        <section className="mx-auto max-w-6xl px-6 pb-16" data-reveal>
+          <div className="ticker-track flex w-[180%] flex-nowrap gap-3 text-sm text-slate-600">
+            {moodStrip.map((mood) => (
               <span
                 key={mood}
                 className="rounded-full border border-slate-200/70 bg-white/70 px-4 py-2 shadow-[0_10px_30px_-20px_rgba(12,18,40,0.3)] backdrop-blur"
@@ -320,143 +420,149 @@ export default function Home() {
         </section>
 
         <section id="features" className="mx-auto max-w-6xl px-6 py-20">
-          <div className="flex flex-col gap-4" data-animate>
-            <Badge>What makes it slick</Badge>
+          <div className="flex flex-col gap-4" data-reveal>
+            <Badge>Why GoWavy</Badge>
             <h2 className="text-3xl md:text-4xl">
-              A hangout engine that feels like magic.
+              The shortest path from "what should we do?" to "we're on the way".
             </h2>
             <p className="max-w-2xl text-lg text-slate-600">
-              GoWavy is built to collapse decision fatigue into a single, smooth
-              flow. Discover, collaborate, and commit without the noise.
+              We built GoWavy to make group planning feel effortless. Less
+              scrolling, more showing up.
             </p>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3 perspective-1200">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="card-3d rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.5)]"
-                data-animate
-              >
-                <div
-                  className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.accent} text-white shadow-lg`}
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {featureCards.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <Card
+                  key={feature.title}
+                  className="h-full border-slate-200/70 bg-white/80"
+                  data-reveal
                 >
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900">
-                  {feature.title}
-                </h3>
-                <p className="mt-3 text-sm text-slate-600">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+                  <CardHeader className="gap-4">
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.accent} text-white shadow-lg`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{feature.title}</CardTitle>
+                      <CardDescription className="mt-2 text-sm">
+                        {feature.description}
+                      </CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              );
+            })}
           </div>
         </section>
 
-        <section id="how" className="mx-auto max-w-6xl px-6 py-20">
+        <section id="flow" className="mx-auto max-w-6xl px-6 py-20">
           <div className="grid gap-10 lg:grid-cols-[0.45fr_0.55fr]">
-            <div data-animate>
-              <Badge>How it works</Badge>
+            <div data-reveal>
+              <Badge>Flow</Badge>
               <h2 className="mt-4 text-3xl md:text-4xl">
-                Three steps to the perfect hangout.
+                Three taps to get everyone moving.
               </h2>
               <p className="mt-4 text-lg text-slate-600">
-                Go from vibe to venue in minutes with an interface that feels
-                like a shared playlist for your night out.
+                GoWavy keeps the vibe front and center while quietly managing
+                the logistics behind the scenes.
               </p>
               <div className="mt-8 grid gap-4">
-                {stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="glass-panel rounded-2xl border border-white/60 px-5 py-4"
-                  >
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                      {stat.label}
-                    </p>
-                    <p className="mt-2 text-xl font-semibold text-slate-900">
-                      {stat.value}
-                    </p>
-                  </div>
-                ))}
+                <div className="flex items-center gap-3 text-sm text-slate-600">
+                  <CalendarCheck className="h-4 w-4 text-[var(--wave-teal)]" />
+                  <span>Auto-sync availability as votes land.</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-slate-600">
+                  <MessageCircle className="h-4 w-4 text-[var(--wave-blue)]" />
+                  <span>Short reactions replace long debates.</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-slate-600">
+                  <MapPin className="h-4 w-4 text-[var(--wave-red)]" />
+                  <span>Routes update to keep everyone nearby.</span>
+                </div>
               </div>
             </div>
-
-            <div className="space-y-6" data-animate>
-              {steps.map((step, index) => (
-                <div
+            <div className="space-y-4" data-reveal>
+              {flowSteps.map((step, index) => (
+                <Card
                   key={step.title}
-                  className="glass-panel rounded-3xl border border-white/60 p-6"
+                  className="border-slate-200/70 bg-white/80"
                 >
-                  <div className="flex items-start gap-4">
+                  <CardHeader className="flex flex-row items-start gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--wave-ink)] text-sm font-semibold text-white">
                       {String(index + 1).padStart(2, "0")}
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-sm text-slate-600">
-                        {step.detail}
-                      </p>
+                      <CardTitle className="text-lg">{step.title}</CardTitle>
+                      <CardDescription className="mt-2">
+                        {step.description}
+                      </CardDescription>
                     </div>
-                  </div>
-                </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="rounded-2xl bg-[var(--wave-ink)]/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      {step.meta}
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="collab" className="mx-auto max-w-6xl px-6 py-20">
+        <section id="board" className="mx-auto max-w-6xl px-6 py-20">
           <div className="grid gap-10 lg:grid-cols-[0.55fr_0.45fr]">
-            <div className="space-y-6" data-animate>
-              <Badge>Collaboration</Badge>
+            <div className="space-y-6" data-reveal>
+              <Badge>Crew board</Badge>
               <h2 className="text-3xl md:text-4xl">
-                Plan together without the chaos.
+                Everyone feels heard. Nobody gets stuck.
               </h2>
               <p className="text-lg text-slate-600">
-                Build a shared queue, drop reactions, and watch the consensus
-                form in real time. GoWavy keeps the energy up and the friction
-                down.
+                Watch reactions stack, see the top picks float, and lock the
+                perfect option together.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="glass-panel rounded-3xl border border-white/60 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                    Live reactions
-                  </p>
-                  <p className="mt-2 text-sm text-slate-600">
-                    Emoji votes and instant feedback keep every friend in the
-                    loop.
-                  </p>
-                </div>
-                <div className="glass-panel rounded-3xl border border-white/60 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                    Smart meetups
-                  </p>
-                  <p className="mt-2 text-sm text-slate-600">
-                    Auto-suggest the best midpoint for everyone in the crew.
-                  </p>
-                </div>
+                <Card className="border-slate-200/70 bg-white/80">
+                  <CardHeader>
+                    <CardTitle className="text-sm">Live reactions</CardTitle>
+                    <CardDescription>
+                      Emoji votes and instant feedback keep everyone aligned.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+                <Card className="border-slate-200/70 bg-white/80">
+                  <CardHeader>
+                    <CardTitle className="text-sm">Smart meetups</CardTitle>
+                    <CardDescription>
+                      Auto-suggest the midpoint that saves the most time.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
               </div>
-              <Button variant="outline">See collaboration demo</Button>
+              <Button variant="outline" className="gap-2">
+                Preview the board
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
-
-            <div className="relative perspective-1200" data-animate>
-              <div className="card-3d rounded-[28px] border border-slate-200/70 bg-white/80 p-6 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.55)]">
+            <div className="relative" data-reveal>
+              <Card className="border-slate-200/70 bg-white/80 p-6">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold text-slate-900">
-                    Crew board
+                    Friday night board
                   </p>
                   <span className="text-xs text-slate-500">8 friends</span>
                 </div>
                 <div className="mt-4 space-y-3">
                   {[
+                    "Sunset gelato",
                     "Rooftop breeze",
-                    "Cozy bookstore",
-                    "Neon ramen",
+                    "Night market",
                   ].map((item) => (
                     <div
                       key={item}
-                      className="flex items-center justify-between rounded-2xl border border-slate-200/60 bg-white/70 px-4 py-3"
+                      className="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3"
                     >
                       <span className="text-sm text-slate-700">{item}</span>
                       <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-slate-700">
@@ -468,76 +574,57 @@ export default function Home() {
                 <div className="mt-6 rounded-2xl bg-[var(--wave-ink)]/90 px-4 py-3 text-xs text-white">
                   Plan locked. Share ETA with the crew.
                 </div>
-              </div>
+              </Card>
               <div className="absolute -right-6 -top-6 hidden h-24 w-24 rounded-full border border-white/70 bg-white/70 shadow-[0_20px_60px_-40px_rgba(12,18,40,0.6)] backdrop-blur lg:block" />
             </div>
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-6 py-20" data-animate>
-          <div className="grid gap-10 lg:grid-cols-[0.45fr_0.55fr]">
-            <div>
-              <Badge>Budget first</Badge>
-              <h2 className="mt-4 text-3xl md:text-4xl">
-                Keep plans within your comfort zone.
-              </h2>
-              <p className="mt-4 text-lg text-slate-600">
-                Set a hard cap or let GoWavy auto-balance options based on the
-                crew. Every recommendation stays inside your spend limit.
-              </p>
-              <div className="mt-8 space-y-4">
-                <div className="flex items-center justify-between text-sm text-slate-600">
-                  <span>$15 chill</span>
-                  <span>$50 all-in</span>
-                </div>
-                <input
-                  type="range"
-                  defaultValue={32}
-                  className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-[var(--wave-teal)]"
-                />
-                <div className="flex items-center gap-3 text-sm text-slate-600">
-                  <span className="rounded-full bg-[var(--wave-red)]/15 px-3 py-1 text-xs font-semibold text-slate-700">
-                    Your cap
-                  </span>
-                  <span>$32 per person</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2 perspective-1200">
-              {["Chill bites", "Craft mocktails", "Late-night dessert", "Live DJ"].map(
-                (item, index) => (
-                  <div
-                    key={item}
-                    className="card-3d rounded-3xl border border-slate-200/70 bg-white/80 p-5"
-                  >
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                      {`Pick ${index + 1}`}
+        <section className="mx-auto max-w-6xl px-6 py-20" data-reveal>
+          <div className="flex flex-col gap-4">
+            <Badge>Love notes</Badge>
+            <h2 className="text-3xl md:text-4xl">
+              Small crews, big energy.
+            </h2>
+            <p className="max-w-2xl text-lg text-slate-600">
+              Early testers are already shaving hours off planning and keeping
+              the vibe high.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <Card
+                key={testimonial.name}
+                className="h-full border-slate-200/70 bg-white/80"
+              >
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-slate-600">"{testimonial.quote}"</p>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {testimonial.name}
                     </p>
-                    <p className="mt-3 text-lg font-semibold text-slate-900">
-                      {item}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-600">
-                      Est. ${18 + index * 6} per person
-                    </p>
+                    <p className="text-xs text-slate-500">{testimonial.role}</p>
                   </div>
-                )
-              )}
-            </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </section>
 
         <section id="waitlist" className="mx-auto max-w-6xl px-6 py-24">
-          <div className="rounded-[36px] border border-slate-200/70 bg-white/90 p-10 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)]" data-animate>
+          <div
+            className="rounded-[36px] border border-slate-200/70 bg-white/90 p-10 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)]"
+            data-reveal
+          >
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
                 <Badge>Waitlist</Badge>
                 <h2 className="mt-4 text-3xl md:text-4xl">
-                  Ready to ride the GoWavy wave?
+                  Ready to ride the wave with your crew?
                 </h2>
                 <p className="mt-4 text-lg text-slate-600">
-                  Get early access, invite friends, and help shape the future of
-                  mood-first hangouts.
+                  Get early access, invite friends, and help shape the next
+                  era of nights out.
                 </p>
                 <form
                   className="mt-6 flex flex-col gap-3 sm:flex-row"
@@ -553,20 +640,20 @@ export default function Home() {
                   </Button>
                 </form>
                 <p className="mt-3 text-xs text-slate-500">
-                  No spam. Just the invite when your city opens.
+                  No spam. Just a heads up when your city opens.
                 </p>
               </div>
-              <div className="card-3d rounded-3xl border border-slate-200/70 bg-[radial-gradient(circle_at_top,_var(--wave-mint),_transparent_60%)] p-6">
+              <div className="rounded-3xl border border-slate-200/70 bg-[radial-gradient(circle_at_top,_var(--wave-mint),_transparent_60%)] p-6">
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
                   Beta preview
                 </p>
                 <div className="mt-6 space-y-4">
                   <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
                     <p className="text-sm font-semibold text-slate-900">
-                      Mood: Chill + chat
+                      Mood: Rooftop breeze
                     </p>
                     <p className="mt-2 text-xs text-slate-600">
-                      3 spots, 12 min walk, $22 cap
+                      4 spots, 10 min walk, $24 cap
                     </p>
                   </div>
                   <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
@@ -574,7 +661,7 @@ export default function Home() {
                       Crew sync
                     </p>
                     <p className="mt-2 text-xs text-slate-600">
-                      6 of 8 friends confirmed
+                      5 of 7 friends confirmed
                     </p>
                   </div>
                   <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
@@ -582,7 +669,7 @@ export default function Home() {
                       Auto itinerary
                     </p>
                     <p className="mt-2 text-xs text-slate-600">
-                      Meet at 7:30 PM, split with one tap
+                      Meet at 7:45 PM, split with one tap
                     </p>
                   </div>
                 </div>
@@ -598,7 +685,7 @@ export default function Home() {
             <div className="h-8 w-8 rounded-full bg-[conic-gradient(from_120deg,_var(--wave-red),_var(--wave-teal),_var(--wave-navy),_var(--wave-red))]" />
             <span>GoWavy</span>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-6">
             <span>hello@gowavy.com</span>
             <span>Launching 2026</span>
           </div>
@@ -607,3 +694,4 @@ export default function Home() {
     </div>
   );
 }
+

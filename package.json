@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd client && npm run start",
+    "lint": "cd client && npm run lint"
+  },
+  "devDependencies": {
+    "shadcn": "^3.8.5"
+  }
+}

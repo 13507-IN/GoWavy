@@ -11,16 +11,17 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 rounded-full text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--wave-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-none text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--wave-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60";
 
 const variantStyles: Record<ButtonVariant, string> = {
   default:
-    "bg-[var(--wave-ink)] text-white shadow-[0_20px_60px_-40px_rgba(12,18,40,0.8)] hover:translate-y-[-1px] hover:bg-[#111c38]",
+    "bg-[color:var(--wave-teal)] text-white shadow-[0_20px_60px_-40px_rgba(107,144,128,0.6)] hover:translate-y-[-1px] hover:brightness-95",
   outline:
-    "border border-slate-200/70 bg-white/70 text-slate-900 backdrop-blur hover:border-slate-300 hover:bg-white",
-  ghost: "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80",
+    "border border-[color:rgba(107,144,128,0.35)] bg-[color:rgba(246,247,235,0.8)] text-[color:var(--wave-ink)] backdrop-blur hover:border-[color:rgba(107,144,128,0.5)] hover:bg-[color:rgba(246,247,235,0.95)]",
+  ghost:
+    "text-[color:var(--wave-teal)] hover:text-[color:var(--wave-ink)] hover:bg-[color:rgba(246,247,235,0.7)]",
   glow:
-    "bg-gradient-to-r from-[var(--wave-red)] via-[var(--wave-teal)] to-[var(--wave-blue)] text-white shadow-[0_25px_70px_-35px_rgba(63,215,196,0.8)] hover:translate-y-[-1px]",
+    "bg-[color:var(--wave-red)] text-white shadow-[0_25px_70px_-35px_rgba(255,102,102,0.6)] hover:translate-y-[-1px] hover:brightness-95",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

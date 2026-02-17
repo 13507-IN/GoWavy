@@ -60,28 +60,28 @@ const featureCards = [
     description:
       "Tell us the mood and GoWavy maps it to places that match energy, price, and distance.",
     icon: Sparkles,
-    accent: "from-[var(--wave-red)] to-[var(--wave-teal)]",
+    accent: "bg-[color:var(--wave-red)]",
   },
   {
     title: "Crew sync",
     description:
       "Invite the group, collect reactions, and watch consensus build in real time.",
     icon: Users,
-    accent: "from-[var(--wave-teal)] to-[var(--wave-blue)]",
+    accent: "bg-[color:var(--wave-teal)]",
   },
   {
     title: "Budget guardrails",
     description:
       "Set a hard cap and we only suggest options that keep the whole crew comfy.",
     icon: Wallet,
-    accent: "from-[var(--wave-blue)] to-[var(--wave-navy)]",
+    accent: "bg-[color:var(--wave-red)]",
   },
   {
     title: "Walkable radius",
     description:
       "Lock the distance and swap to the fastest, most fun path for everyone.",
     icon: MapPin,
-    accent: "from-[var(--wave-coral)] to-[var(--wave-red)]",
+    accent: "bg-[color:var(--wave-teal)]",
   },
 ];
 
@@ -104,9 +104,9 @@ const flowSteps = [
 ];
 
 const planTiles = [
-  { title: "Neon ramen", meta: "12 min walk � $$", votes: "76% yes" },
-  { title: "Midnight market", meta: "18 min walk � $", votes: "64% yes" },
-  { title: "Vinyl lounge", meta: "15 min walk � $$$", votes: "58% yes" },
+  { title: "Neon ramen", meta: "12 min walk - $$", votes: "76% yes" },
+  { title: "Midnight market", meta: "18 min walk - $", votes: "64% yes" },
+  { title: "Vinyl lounge", meta: "15 min walk - $$$", votes: "58% yes" },
 ];
 
 const testimonials = [
@@ -211,36 +211,41 @@ export default function Home() {
   return (
     <div
       ref={rootRef}
-      className="relative min-h-screen overflow-x-hidden bg-[#fbf8f4] text-slate-900"
+      className="relative min-h-screen overflow-x-hidden bg-[#F6F7EB] text-[color:var(--wave-ink)]"
     >
-      <div className="pointer-events-none absolute inset-0 bg-grid opacity-35" />
-      <div className="pointer-events-none absolute -top-32 right-[-10%] h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_transparent_70%)] opacity-70 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-44 left-[-12%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_bottom,_var(--wave-mint),_transparent_70%)] opacity-70 blur-3xl" />
-      <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(87,179,255,0.25),_transparent_65%)] blur-3xl" />
+      <div className="pointer-events-none absolute -top-32 right-[-10%] h-[460px] w-[460px] rounded-full bg-[color:var(--wave-red)] opacity-30 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-44 left-[-12%] h-[520px] w-[520px] rounded-full bg-[color:var(--wave-teal)] opacity-20 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[color:var(--wave-teal)] opacity-15 blur-3xl" />
 
       <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-16">
         <div className="flex items-center gap-3">
-          <div className="h-11 w-11 rounded-full bg-[conic-gradient(from_120deg,_var(--wave-red),_var(--wave-teal),_var(--wave-navy),_var(--wave-red))] shadow-[0_10px_30px_-12px_rgba(31,43,90,0.7)]" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[color:rgba(246,247,235,0.9)] shadow-[0_10px_30px_-12px_rgba(31,43,90,0.35)] ring-1 ring-[color:rgba(246,247,235,0.6)]">
+            <img
+              src="/GoWavy_LOGO.png"
+              alt="GoWavy logo"
+              className="h-9 w-9 rounded-full object-cover"
+            />
+          </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+            <p className="text-xs uppercase tracking-[0.3em] text-[color:rgba(107,144,128,0.75)]">
               GoWavy
             </p>
-            <p className="text-sm font-semibold text-slate-900">
+            <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
               Plan the night fast
             </p>
           </div>
         </div>
-        <nav className="hidden items-center gap-10 text-sm text-slate-600 lg:flex">
-          <a className="transition hover:text-slate-900" href="#features">
+        <nav className="hidden items-center gap-10 text-sm text-[color:var(--wave-teal)] lg:flex">
+          <a className="transition hover:text-[color:var(--wave-ink)]" href="#features">
             Features
           </a>
-          <a className="transition hover:text-slate-900" href="#flow">
+          <a className="transition hover:text-[color:var(--wave-ink)]" href="#flow">
             Flow
           </a>
-          <a className="transition hover:text-slate-900" href="#board">
+          <a className="transition hover:text-[color:var(--wave-ink)]" href="#board">
             Crew board
           </a>
-          <a className="transition hover:text-slate-900" href="#waitlist">
+          <a className="transition hover:text-[color:var(--wave-ink)]" href="#waitlist">
             Waitlist
           </a>
         </nav>
@@ -254,11 +259,11 @@ export default function Home() {
         <section className="hero mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-6 lg:grid-cols-[1.05fr_0.95fr] lg:pt-20">
           <div data-reveal>
             <Badge className="mb-6">Private beta</Badge>
-            <h1 className="text-4xl leading-[1.05] md:text-6xl">
+            <h1 className="text-4xl leading-[1.05] tracking-[-0.02em] md:text-6xl">
               Turn any group chat into a plan in minutes. Ride the{" "}
-              <span className="text-gradient">GoWavy</span>.
+              <span className="text-[color:var(--wave-red)]">GoWavy</span>.
             </h1>
-            <p className="mt-6 text-lg text-slate-600">
+            <p className="mt-6 text-lg text-[color:var(--wave-teal)]">
               GoWavy is the vibe-first planner for nights out. Drop a mood,
               invite the crew, keep the budget tight, and get moving fast.
             </p>
@@ -275,7 +280,7 @@ export default function Home() {
                 Join the waitlist
               </Button>
             </form>
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[color:rgba(107,144,128,0.75)]">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" size="sm" className="gap-2">
@@ -294,15 +299,15 @@ export default function Home() {
                     {flowSteps.map((step, index) => (
                       <div
                         key={step.title}
-                        className="rounded-2xl border border-slate-200/70 bg-white/80 p-4"
+                        className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)] p-4"
                       >
-                        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                        <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
                           Step {String(index + 1).padStart(2, "0")}
                         </p>
-                        <p className="mt-2 text-sm font-semibold text-slate-900">
+                        <p className="mt-2 text-sm font-semibold text-[color:var(--wave-ink)]">
                           {step.title}
                         </p>
-                        <p className="mt-2 text-xs text-slate-600">
+                        <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
                           {step.description}
                         </p>
                       </div>
@@ -329,13 +334,13 @@ export default function Home() {
               {heroStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="gap-2 border-slate-200/70 bg-white/70 py-4"
+                  className="gap-2 border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] py-4"
                 >
                   <CardContent className="px-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
                       {stat.label}
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-slate-900">
+                    <p className="mt-2 text-lg font-semibold text-[color:var(--wave-ink)]">
                       {stat.value}
                     </p>
                   </CardContent>
@@ -345,18 +350,18 @@ export default function Home() {
           </div>
 
           <div className="relative flex items-center justify-center" data-reveal>
-            <div className="hero-orb absolute inset-4 rounded-full bg-[radial-gradient(circle_at_top,_var(--wave-coral),_var(--wave-teal)_45%,_var(--wave-navy)_90%)] glow-ring animate-float-slower" />
-            <Card className="relative z-10 w-full max-w-md border-white/60 bg-white/80 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)] backdrop-blur">
+            <div className="hero-orb absolute inset-4 rounded-full bg-[color:var(--wave-teal)] glow-ring animate-float-slower" />
+            <Card className="relative z-10 w-full max-w-md border-[color:rgba(246,247,235,0.6)] bg-[color:rgba(246,247,235,0.9)] shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)] backdrop-blur">
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
                       Tonight's wave
                     </p>
                     <CardTitle className="mt-2 text-xl">Crew board</CardTitle>
                     <CardDescription>8 friends synced � 4 voting</CardDescription>
                   </div>
-                  <Badge className="bg-white/80 text-slate-500">
+                  <Badge className="bg-[color:rgba(246,247,235,0.9)] text-[color:rgba(107,144,128,0.75)]">
                     Live
                   </Badge>
                 </div>
@@ -365,22 +370,22 @@ export default function Home() {
                 {planTiles.map((tile) => (
                   <div
                     key={tile.title}
-                    className="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3"
+                    className="flex items-center justify-between rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-4 py-3"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">
+                      <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                         {tile.title}
                       </p>
-                      <p className="text-xs text-slate-500">{tile.meta}</p>
+                      <p className="text-xs text-[color:rgba(107,144,128,0.75)]">{tile.meta}</p>
                     </div>
-                    <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-slate-700">
+                    <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-[color:var(--wave-teal)]">
                       {tile.votes}
                     </span>
                   </div>
                 ))}
               </CardContent>
-              <CardFooter className="border-t border-slate-200/70 pt-4">
-                <div className="flex w-full items-center justify-between text-sm text-slate-600">
+              <CardFooter className="border-t border-[color:rgba(107,144,128,0.25)] pt-4">
+                <div className="flex w-full items-center justify-between text-sm text-[color:var(--wave-teal)]">
                   <span>Meet at 7:30 PM</span>
                   <Button variant="outline" size="sm">
                     Lock plan
@@ -388,11 +393,11 @@ export default function Home() {
                 </div>
               </CardFooter>
             </Card>
-            <div className="float-card absolute -right-6 top-6 hidden w-44 rounded-3xl border border-white/70 bg-white/80 p-4 text-xs text-slate-600 shadow-[0_20px_60px_-40px_rgba(12,18,40,0.7)] backdrop-blur lg:block">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            <div className="float-card absolute -right-6 top-6 hidden w-44 rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.9)] p-4 text-xs text-[color:var(--wave-teal)] shadow-[0_20px_60px_-40px_rgba(12,18,40,0.7)] backdrop-blur lg:block">
+              <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.6)]">
                 Next
               </p>
-              <p className="mt-2 text-sm font-semibold text-slate-900">
+              <p className="mt-2 text-sm font-semibold text-[color:var(--wave-ink)]">
                 Ramen + arcade
               </p>
               <div className="mt-3 flex items-center gap-2">
@@ -404,19 +409,19 @@ export default function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-6 pb-16" data-reveal>
-          <div className="ticker-track flex w-[180%] flex-nowrap gap-3 text-sm text-slate-600">
-            {moodStrip.map((mood) => (
-              <span
-                key={mood}
-                className="rounded-full border border-slate-200/70 bg-white/70 px-4 py-2 shadow-[0_10px_30px_-20px_rgba(12,18,40,0.3)] backdrop-blur"
-              >
-                {mood}
-              </span>
-            ))}
-          </div>
-          <p className="mt-4 text-sm text-slate-500">
-            Scroll to ride the wave of moods.
-          </p>
+            <div className="ticker-track flex w-[180%] flex-nowrap gap-4 text-base font-semibold uppercase tracking-[0.12em] text-[color:var(--wave-teal)] md:text-lg">
+              {moodStrip.map((mood) => (
+                <span
+                  key={mood}
+                  className="rounded-md border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-6 py-3 shadow-[0_10px_30px_-20px_rgba(12,18,40,0.25)] backdrop-blur"
+                >
+                  {mood}
+                </span>
+              ))}
+            </div>
+            <p className="mt-4 text-sm uppercase tracking-[0.16em] text-[color:rgba(107,144,128,0.75)]">
+              Scroll to ride the wave of moods.
+            </p>
         </section>
 
         <section id="features" className="mx-auto max-w-6xl px-6 py-20">
@@ -425,7 +430,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl">
               The shortest path from "what should we do?" to "we're on the way".
             </h2>
-            <p className="max-w-2xl text-lg text-slate-600">
+            <p className="max-w-2xl text-lg text-[color:var(--wave-teal)]">
               We built GoWavy to make group planning feel effortless. Less
               scrolling, more showing up.
             </p>
@@ -436,12 +441,12 @@ export default function Home() {
               return (
                 <Card
                   key={feature.title}
-                  className="h-full border-slate-200/70 bg-white/80"
+                  className="h-full border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
                   data-reveal
                 >
                   <CardHeader className="gap-4">
                     <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.accent} text-white shadow-lg`}
+                      className={`flex h-12 w-12 items-center justify-center rounded-none ${feature.accent} text-white shadow-lg`}
                     >
                       <Icon className="h-5 w-5" />
                     </div>
@@ -465,20 +470,20 @@ export default function Home() {
               <h2 className="mt-4 text-3xl md:text-4xl">
                 Three taps to get everyone moving.
               </h2>
-              <p className="mt-4 text-lg text-slate-600">
+              <p className="mt-4 text-lg text-[color:var(--wave-teal)]">
                 GoWavy keeps the vibe front and center while quietly managing
                 the logistics behind the scenes.
               </p>
               <div className="mt-8 grid gap-4">
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
                   <CalendarCheck className="h-4 w-4 text-[var(--wave-teal)]" />
                   <span>Auto-sync availability as votes land.</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
                   <MessageCircle className="h-4 w-4 text-[var(--wave-blue)]" />
                   <span>Short reactions replace long debates.</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
                   <MapPin className="h-4 w-4 text-[var(--wave-red)]" />
                   <span>Routes update to keep everyone nearby.</span>
                 </div>
@@ -488,7 +493,7 @@ export default function Home() {
               {flowSteps.map((step, index) => (
                 <Card
                   key={step.title}
-                  className="border-slate-200/70 bg-white/80"
+                  className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
                 >
                   <CardHeader className="flex flex-row items-start gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--wave-ink)] text-sm font-semibold text-white">
@@ -502,7 +507,7 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="rounded-2xl bg-[var(--wave-ink)]/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    <div className="rounded-none bg-[var(--wave-ink)]/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
                       {step.meta}
                     </div>
                   </CardContent>
@@ -519,12 +524,12 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl">
                 Everyone feels heard. Nobody gets stuck.
               </h2>
-              <p className="text-lg text-slate-600">
+              <p className="text-lg text-[color:var(--wave-teal)]">
                 Watch reactions stack, see the top picks float, and lock the
                 perfect option together.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <Card className="border-slate-200/70 bg-white/80">
+                <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]">
                   <CardHeader>
                     <CardTitle className="text-sm">Live reactions</CardTitle>
                     <CardDescription>
@@ -532,7 +537,7 @@ export default function Home() {
                     </CardDescription>
                   </CardHeader>
                 </Card>
-                <Card className="border-slate-200/70 bg-white/80">
+                <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]">
                   <CardHeader>
                     <CardTitle className="text-sm">Smart meetups</CardTitle>
                     <CardDescription>
@@ -547,12 +552,12 @@ export default function Home() {
               </Button>
             </div>
             <div className="relative" data-reveal>
-              <Card className="border-slate-200/70 bg-white/80 p-6">
+              <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)] p-6">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-slate-900">
+                  <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                     Friday night board
                   </p>
-                  <span className="text-xs text-slate-500">8 friends</span>
+                  <span className="text-xs text-[color:rgba(107,144,128,0.75)]">8 friends</span>
                 </div>
                 <div className="mt-4 space-y-3">
                   {[
@@ -562,20 +567,20 @@ export default function Home() {
                   ].map((item) => (
                     <div
                       key={item}
-                      className="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/70 px-4 py-3"
+                      className="flex items-center justify-between rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-4 py-3"
                     >
-                      <span className="text-sm text-slate-700">{item}</span>
-                      <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-slate-700">
+                      <span className="text-sm text-[color:var(--wave-teal)]">{item}</span>
+                      <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-[color:var(--wave-teal)]">
                         72% voted
                       </span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 rounded-2xl bg-[var(--wave-ink)]/90 px-4 py-3 text-xs text-white">
+                <div className="mt-6 rounded-none bg-[var(--wave-ink)]/90 px-4 py-3 text-xs text-white">
                   Plan locked. Share ETA with the crew.
                 </div>
               </Card>
-              <div className="absolute -right-6 -top-6 hidden h-24 w-24 rounded-full border border-white/70 bg-white/70 shadow-[0_20px_60px_-40px_rgba(12,18,40,0.6)] backdrop-blur lg:block" />
+              <div className="absolute -right-6 -top-6 hidden h-24 w-24 rounded-full border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] shadow-[0_20px_60px_-40px_rgba(12,18,40,0.6)] backdrop-blur lg:block" />
             </div>
           </div>
         </section>
@@ -586,7 +591,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl">
               Small crews, big energy.
             </h2>
-            <p className="max-w-2xl text-lg text-slate-600">
+            <p className="max-w-2xl text-lg text-[color:var(--wave-teal)]">
               Early testers are already shaving hours off planning and keeping
               the vibe high.
             </p>
@@ -595,15 +600,15 @@ export default function Home() {
             {testimonials.map((testimonial) => (
               <Card
                 key={testimonial.name}
-                className="h-full border-slate-200/70 bg-white/80"
+                className="h-full border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
               >
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-slate-600">"{testimonial.quote}"</p>
+                  <p className="text-sm text-[color:var(--wave-teal)]">"{testimonial.quote}"</p>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                       {testimonial.name}
                     </p>
-                    <p className="text-xs text-slate-500">{testimonial.role}</p>
+                    <p className="text-xs text-[color:rgba(107,144,128,0.75)]">{testimonial.role}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -613,7 +618,7 @@ export default function Home() {
 
         <section id="waitlist" className="mx-auto max-w-6xl px-6 py-24">
           <div
-            className="rounded-[36px] border border-slate-200/70 bg-white/90 p-10 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)]"
+            className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.95)] p-10 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)]"
             data-reveal
           >
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -622,7 +627,7 @@ export default function Home() {
                 <h2 className="mt-4 text-3xl md:text-4xl">
                   Ready to ride the wave with your crew?
                 </h2>
-                <p className="mt-4 text-lg text-slate-600">
+                <p className="mt-4 text-lg text-[color:var(--wave-teal)]">
                   Get early access, invite friends, and help shape the next
                   era of nights out.
                 </p>
@@ -639,36 +644,36 @@ export default function Home() {
                     Join waitlist
                   </Button>
                 </form>
-                <p className="mt-3 text-xs text-slate-500">
+                <p className="mt-3 text-xs text-[color:rgba(107,144,128,0.75)]">
                   No spam. Just a heads up when your city opens.
                 </p>
               </div>
-              <div className="rounded-3xl border border-slate-200/70 bg-[radial-gradient(circle_at_top,_var(--wave-mint),_transparent_60%)] p-6">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              <div className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:var(--wave-cream)] p-6">
+                <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
                   Beta preview
                 </p>
                 <div className="mt-6 space-y-4">
-                  <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
-                    <p className="text-sm font-semibold text-slate-900">
+                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
+                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                       Mood: Rooftop breeze
                     </p>
-                    <p className="mt-2 text-xs text-slate-600">
+                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
                       4 spots, 10 min walk, $24 cap
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
-                    <p className="text-sm font-semibold text-slate-900">
+                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
+                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                       Crew sync
                     </p>
-                    <p className="mt-2 text-xs text-slate-600">
+                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
                       5 of 7 friends confirmed
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/70 bg-white/70 p-4">
-                    <p className="text-sm font-semibold text-slate-900">
+                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
+                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
                       Auto itinerary
                     </p>
-                    <p className="mt-2 text-xs text-slate-600">
+                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
                       Meet at 7:45 PM, split with one tap
                     </p>
                   </div>
@@ -679,10 +684,16 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-slate-200/70 px-6 py-8 text-sm text-slate-500">
+      <footer className="relative z-10 border-t border-[color:rgba(107,144,128,0.25)] px-6 py-8 text-sm text-[color:rgba(107,144,128,0.75)]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-[conic-gradient(from_120deg,_var(--wave-red),_var(--wave-teal),_var(--wave-navy),_var(--wave-red))]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[color:rgba(246,247,235,0.9)] ring-1 ring-[color:rgba(246,247,235,0.6)]">
+              <img
+                src="/GoWavy_LOGO.png"
+                alt="GoWavy logo"
+                className="h-6 w-6 rounded-full object-cover"
+              />
+            </div>
             <span>GoWavy</span>
           </div>
           <div className="flex flex-wrap items-center gap-6">
@@ -694,4 +705,3 @@ export default function Home() {
     </div>
   );
 }
-

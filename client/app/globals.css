@@ -5,32 +5,33 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --wave-red: #ff6f61;
-  --wave-coral: #ff8a72;
-  --wave-teal: #3fd7c4;
-  --wave-mint: #7cf3e4;
-  --wave-blue: #57b3ff;
-  --wave-navy: #1f2b5a;
-  --wave-ink: #0b1221;
+  --wave-cream: #f6f7eb;
+  --wave-red: #ff6666;
+  --wave-coral: #ff6666;
+  --wave-teal: #6b9080;
+  --wave-mint: #6b9080;
+  --wave-blue: #6b9080;
+  --wave-navy: #6b9080;
+  --wave-ink: #6b9080;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #f6f7eb;
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: #f6f7eb;
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: #f6f7eb;
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
+  --primary: #6b9080;
+  --primary-foreground: #f6f7eb;
+  --secondary: #f6f7eb;
+  --secondary-foreground: #6b9080;
+  --muted: #f6f7eb;
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: #ff6666;
+  --accent-foreground: #f6f7eb;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: rgba(107, 144, 128, 0.25);
+  --input: rgba(107, 144, 128, 0.25);
+  --ring: rgba(107, 144, 128, 0.5);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -91,6 +92,8 @@
 
 body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
 }
 
 @layer base {
@@ -105,6 +108,7 @@ body {
   h4,
   .font-display {
     font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.02em;
   }
   body {
     @apply bg-background text-foreground;
@@ -113,28 +117,11 @@ body {
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(
-      110deg,
-      var(--wave-red),
-      var(--wave-teal),
-      var(--wave-blue)
-    );
-    -webkit-background-clip: text;
-    color: transparent;
+    color: var(--wave-red);
   }
 
   .bg-grid {
-    background-image: linear-gradient(
-        to right,
-        rgba(15, 23, 42, 0.06) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(15, 23, 42, 0.06) 1px,
-        transparent 1px
-      );
-    background-size: 90px 90px;
+    background-color: rgba(107, 144, 128, 0.08);
   }
 
   .glass-panel {
@@ -159,8 +146,8 @@ body {
 
   .glow-ring {
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.6),
-      0 50px 140px -70px rgba(31, 43, 90, 0.7);
+      0 0 0 1px rgba(246, 247, 235, 0.8),
+      0 50px 140px -70px rgba(107, 144, 128, 0.6);
   }
 
   .animate-float-slow {

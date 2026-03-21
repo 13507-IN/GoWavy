@@ -192,6 +192,43 @@ input[type="range"]::-moz-range-thumb {
     box-shadow: 0 40px 120px -80px var(--shadow-soft);
   }
 
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(35, 181, 211, 0.12) 0%,
+      rgba(255, 93, 115, 0.06) 100%
+    );
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(35, 181, 211, 0.25);
+  }
+
+  .step-number {
+    text-shadow: 0 0 20px rgba(35, 181, 211, 0.45);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 16px rgba(35, 181, 211, 0.5);
+  }
+
+  .wave-gradient-bg {
+    background:
+      radial-gradient(
+        1200px circle at 15% 0%,
+        rgba(35, 181, 211, 0.35),
+        transparent 45%
+      ),
+      radial-gradient(
+        1000px circle at 90% 100%,
+        rgba(255, 93, 115, 0.35),
+        transparent 45%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(11, 19, 43, 0.98) 0%,
+        rgba(11, 19, 43, 0.9) 100%
+      );
+  }
+
   .perspective-1200 {
     perspective: 1200px;
   }
@@ -332,4 +369,21 @@ input[type="range"]::-moz-range-thumb {
       rgba(11, 19, 43, 0.2) 0px,
       transparent 50%
     );
+}
+
+.dark .glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(47, 231, 231, 0.18) 0%,
+    rgba(255, 107, 132, 0.08) 100%
+  );
+  border: 1px solid rgba(47, 231, 231, 0.25);
+}
+
+.dark .step-number {
+  text-shadow: 0 0 20px rgba(47, 231, 231, 0.45);
+}
+
+.dark .glow-text {
+  text-shadow: 0 0 16px rgba(47, 231, 231, 0.5);
 }

@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import { ArrowRight, MapPin, Moon, Play, Sparkles, Sun } from "lucide-react";
 
 const vibeOptions = [
@@ -72,6 +73,7 @@ const avatars = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -135,10 +137,18 @@ export default function Home() {
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button variant="ghost" className="hidden sm:inline-flex">
+            <Button
+              variant="ghost"
+              className="hidden sm:inline-flex"
+              onClick={() => router.push("/sign-in")}
+            >
               Sign In
             </Button>
-            <Button variant="default" className="hidden sm:inline-flex">
+            <Button
+              variant="default"
+              className="hidden sm:inline-flex"
+              onClick={() => router.push("/sign-up")}
+            >
               Get Started
             </Button>
           </div>
@@ -163,7 +173,12 @@ export default function Home() {
             wave-checked AI craft your next unforgettable memory in seconds.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button variant="glow" size="lg" className="w-full sm:w-auto">
+            <Button
+              variant="glow"
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={() => router.push("/sign-up")}
+            >
               <Sparkles className="h-4 w-4" />
               Start Planning
             </Button>
@@ -200,7 +215,11 @@ export default function Home() {
                     </div>
                   </CardContent>
                   <CardFooter className="border-t border-[color:var(--border-soft)]">
-                    <Button variant="glow" className="ml-auto">
+                    <Button
+                      variant="glow"
+                      className="ml-auto"
+                      onClick={() => router.push("/sign-up")}
+                    >
                       Build my plan
                       <ArrowRight className="h-4 w-4" />
                     </Button>
@@ -310,7 +329,12 @@ export default function Home() {
                       session."
                     </CardContent>
                   </Card>
-                  <Button variant="glow" size="lg" className="w-full text-lg">
+                  <Button
+                    variant="glow"
+                    size="lg"
+                    className="w-full text-lg"
+                    onClick={() => router.push("/sign-up")}
+                  >
                     Generate My Plan
                     <ArrowRight className="h-5 w-5" />
                   </Button>

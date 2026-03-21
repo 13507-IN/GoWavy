@@ -98,8 +98,8 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[color:var(--wave-cream)] text-[color:var(--wave-ink)]">
-      <header className="fixed top-0 z-50 w-full px-6 py-4">
-        <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-[color:var(--border-soft)] px-6 py-3 shadow-[0_30px_80px_-60px_var(--shadow-strong)]">
+      <header className="fixed top-0 z-50 w-full px-4 py-4 sm:px-6 lg:px-10">
+        <div className="glass-panel mx-auto flex w-full max-w-[96rem] items-center justify-between rounded-2xl border border-[color:var(--border-soft)] px-4 py-3 sm:px-6 shadow-[0_30px_80px_-60px_var(--shadow-strong)]">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--wave-teal)]/20">
               <img

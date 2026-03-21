@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,689 +16,383 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  ArrowRight,
-  CalendarCheck,
-  MapPin,
-  MessageCircle,
-  Play,
-  Sparkles,
-  Users,
-  Wallet,
-} from "lucide-react";
+import { ArrowRight, MapPin, Moon, Play, Sparkles, Sun } from "lucide-react";
 
-const moodStrip = [
-  "neon ramen",
-  "sunset gelato",
-  "late-night vinyl",
-  "rooftop breeze",
-  "cozy bookstore",
-  "midnight market",
-  "gallery hop",
-  "sushi sprint",
-  "arcade nostalgia",
-  "quiet wine bar",
-  "street tacos",
-  "harbor walk",
+const vibeOptions = [
+  { label: "Chill", emoji: "🧊", active: true },
+  { label: "Party", emoji: "🥳" },
+  { label: "Romantic", emoji: "❤️" },
+  { label: "Adventure", emoji: "🏔️" },
+  { label: "Healing", emoji: "🧘" },
 ];
 
-const heroStats = [
-  { label: "Avg plan time", value: "2.8 min" },
-  { label: "Live votes", value: "1.4k/hr" },
-  { label: "Crew sweet spot", value: "4-6 friends" },
-];
-
-const featureCards = [
+const trendingTrips = [
   {
-    title: "Vibe intelligence",
-    description:
-      "Tell us the mood and GoWavy maps it to places that match energy, price, and distance.",
-    icon: Sparkles,
-    accent: "bg-[color:var(--wave-red)]",
+    title: "Tokyo Nightlife Loop",
+    vibe: "🥳 Party",
+    tag: "Trending",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBxRfeUzoWpGounH5w_kBRrqxn9hyRGf0vNin9tPKd3XR1aZXsrSRJu2G-zEBPeXzTjCt6bixOd2p4ryBpN2hEkY0OKWCW4nFxmJ406g8CTvx6z4FvWGmeuKXUGYppZRoQGpMssoMAYXFaaN07yrT_ySXFIHbYsXpJ8wvV0okaUNjtOzNgXZxO6ENdl7kZFOjMzlcwJU4sF46eDB53d1NIECmVJ0lUaFUamQ_xy-6octPH65pPGhfZ98L9p1SUV8Qy_hYdoxPIZfK4",
+    tagClass: "bg-[color:var(--wave-red)] text-white",
   },
   {
-    title: "Crew sync",
-    description:
-      "Invite the group, collect reactions, and watch consensus build in real time.",
-    icon: Users,
-    accent: "bg-[color:var(--wave-teal)]",
+    title: "Alpine Escape",
+    vibe: "🏔️ Adventure",
+    tag: "Best Value",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDdLZrwB6OmSTYxDwL-BIJ7fSBgyMshRJrvcf0IBrUcMyuo4yHgUnrqYYVKWhNCWMf2_OY5-jehNnDsw_rQ1tCpWgqkiOxu-Ovo0kCE0nmk8ZwTsQ8uOAtBV44YAznjZEQQ0MJj8vsoZMM4ThuSAjkXEib_7AcwPaVvQdYsaNUV5J5R3t3djwaMAn5k-IFEbmyQcH7mN0unh_piG1lnQTFQQECzC_b5FShK7cwJQ5cvo9OepBe2eFh6CWddjXnMSvZ-oFZ1gxQyJAw",
+    tagClass: "bg-[color:var(--wave-teal)] text-white",
   },
   {
-    title: "Budget guardrails",
-    description:
-      "Set a hard cap and we only suggest options that keep the whole crew comfy.",
-    icon: Wallet,
-    accent: "bg-[color:var(--wave-red)]",
-  },
-  {
-    title: "Walkable radius",
-    description:
-      "Lock the distance and swap to the fastest, most fun path for everyone.",
-    icon: MapPin,
-    accent: "bg-[color:var(--wave-teal)]",
+    title: "Kyoto Zen Retreat",
+    vibe: "🧘 Healing",
+    tag: "Relaxation",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCr3RS1x2NgIRiyzSQg5yBvQjGeISNQqnqir_9IuFhrJLuZvofpqn4fiZeo5Dsjr89B4oWafxpD20gS2FiQRwSB-850Chc1ziWKB6acm5iimKS8rtQKCfAb-49jBeBRDDg7GWnAIw79dncUWFHbU_YOHGvk0foAC5o1OYU1ZsJT7hvrD3qYJF8_WGmCzosqfBcB6LdWy8fFDc5y-1EWy7w6cvUYY03_LXRMqmg_n8j1pbwBbkGvRQI9rMp0DzoOCoD_9cNKoJvvZLA",
+    tagClass: "bg-[color:var(--wave-ink)] text-white",
   },
 ];
 
-const flowSteps = [
-  {
-    title: "Set the wave",
-    description: "Pick a vibe, radius, and budget in under 10 seconds.",
-    meta: "Mood + distance + cap",
-  },
-  {
-    title: "Gather the crew",
-    description: "Friends vote with taps, reacts, and quick notes.",
-    meta: "Live collaboration",
-  },
-  {
-    title: "Lock the plan",
-    description: "Share the itinerary, split costs, and track arrivals.",
-    meta: "One-tap send",
-  },
+const stats = [
+  { value: "1.2M+", label: "Plans Created" },
+  { value: "98%", label: "Happy Vibes" },
+  { value: "150+", label: "Cities Covered" },
+  { value: "4.9/5", label: "App Store" },
 ];
 
-const planTiles = [
-  { title: "Neon ramen", meta: "12 min walk - $$", votes: "76% yes" },
-  { title: "Midnight market", meta: "18 min walk - $", votes: "64% yes" },
-  { title: "Vinyl lounge", meta: "15 min walk - $$$", votes: "58% yes" },
-];
-
-const testimonials = [
-  {
-    quote:
-      "GoWavy turned a 40-message thread into a plan in under three minutes.",
-    name: "Maya L.",
-    role: "Austin, TX",
-  },
-  {
-    quote:
-      "The budget guardrail kept us honest without killing the vibe. Huge win.",
-    name: "Jordan P.",
-    role: "Toronto, ON",
-  },
-  {
-    quote:
-      "We finally stopped debating and just went. The crew board is magic.",
-    name: "Kei R.",
-    role: "Seattle, WA",
-  },
+const avatars = [
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuAStXAR-ZhNOQyY6tYxkU4HBYb-Kawx5aWEslceVWN9MW6Fn4bwnJ098YJHkJSaEbYbipRqhlI2JOZc5qZdO3-4snVKl77YAMaYnoFWMVRa4dqrqjqmnORPq5AVSlNFFp0zfq5GDXMJqFkDWQwvO8VCUSDxvu9McqFREwSEgIGdVfvZHHxtXGTpykd9uMWKgb4FGyVFYzrAG5gcpDzxBAZAXBVYcR0QFF_sKnP3DE1WSKRKGX8c3JaUltDyf7DvsicmlHPuBUhggaQ",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuCKWG6asbRfSoNFfFT5JVInKsHdDFJltrcaFT1JH_salotOx5RXDQ__No3nd6_4QMdUwndWaKPBAUz7SXIDveQWLKAqTfxhuh-oD1d3uGtkZ00XRAfRPk7l-iYpB4K-koPbHwn1LxMUMH1f11e499efK73n6X6k2clUnv3xRSDGKanytzJ332SSVGXbT9KMEoIiUSojEE-Bjr4_qlqIY0tWG1b9TWT9s1oWMJEnKJK6SmmY2oaccj4UF9rZExHHpW5-g9BhH9iur04",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuCCYLVkr_51jexREXyskrsOdeoyvpSbl53XBEGg2SSY5mtHgqYD4oHAF3SyBHwmXNLNhjDH4VPV6SWwMsfB4zZyzZBZZSrB2usOSoLZWi7xFvfu576ohl2vf6zuw6hgJpvtb0E0nV9OLgl721tiuS0PMHoN3J2NF9omBquvYbvv1YwSauoefTZfg32S7QhGB8XdSgxiypC_wzhYkV09Thrp9chfkb0ueVXg-s3h3YyV63ANqICpqHjZbgOvTbgJ_5orngSablC0Nwk",
 ];
 
 export default function Home() {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+    const storedTheme = localStorage.getItem("gowavy-theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
     ).matches;
+    const initialDark = storedTheme
+      ? storedTheme === "dark"
+      : prefersDark;
 
-    if (prefersReducedMotion) return;
-
-    let ctx: { revert: () => void } | null = null;
-
-    const init = async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      if (!rootRef.current) return;
-
-      ctx = gsap.context(() => {
-        gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element, i) => {
-          gsap.fromTo(
-            element,
-            { y: 32, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.9,
-              delay: i * 0.08,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: element,
-                start: "top 85%",
-              },
-            }
-          );
-        });
-
-        gsap.to(".hero-orb", {
-          yPercent: -12,
-          rotate: 10,
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-
-        gsap.to(".ticker-track", {
-          xPercent: -20,
-          scrollTrigger: {
-            trigger: ".ticker-track",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-
-        gsap.to(".float-card", {
-          y: -18,
-          rotate: 5,
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top 80%",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }, rootRef);
-    };
-
-    init();
-
-    return () => ctx?.revert();
+    setIsDark(initialDark);
+    document.documentElement.classList.toggle("dark", initialDark);
   }, []);
 
-  return (
-    <div
-      ref={rootRef}
-      className="relative min-h-screen overflow-x-hidden bg-[#F6F7EB] text-[color:var(--wave-ink)]"
-    >
-      <div className="pointer-events-none absolute -top-32 right-[-10%] h-[460px] w-[460px] rounded-full bg-[color:var(--wave-red)] opacity-30 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-44 left-[-12%] h-[520px] w-[520px] rounded-full bg-[color:var(--wave-teal)] opacity-20 blur-3xl" />
-      <div className="pointer-events-none absolute left-1/2 top-28 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[color:var(--wave-teal)] opacity-15 blur-3xl" />
+  const toggleTheme = () => {
+    setIsDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle("dark", next);
+      localStorage.setItem("gowavy-theme", next ? "dark" : "light");
+      return next;
+    });
+  };
 
-      <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-16">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[color:rgba(246,247,235,0.9)] shadow-[0_10px_30px_-12px_rgba(31,43,90,0.35)] ring-1 ring-[color:rgba(246,247,235,0.6)]">
-            <img
-              src="/GoWavy_LOGO.png"
-              alt="GoWavy logo"
-              className="h-9 w-9 rounded-full object-cover"
-            />
+  return (
+    <div className="relative min-h-screen overflow-x-hidden bg-[color:var(--wave-cream)] text-[color:var(--wave-ink)]">
+      <header className="fixed top-0 z-50 w-full px-6 py-4">
+        <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-[color:var(--border-soft)] px-6 py-3 shadow-[0_30px_80px_-60px_var(--shadow-strong)]">
+          <div className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--wave-teal)]/20">
+              <img
+                src="/GoWavy_LOGO.png"
+                alt="GoWavy logo"
+                className="h-7 w-7 rounded-full object-cover"
+              />
+            </div>
+            <span className="text-lg font-bold tracking-tight">
+              GoWavy <span className="text-[color:var(--wave-teal)] text-xs">AI</span>
+            </span>
           </div>
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[color:rgba(107,144,128,0.75)]">
-              GoWavy
-            </p>
-            <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-              Plan the night fast
-            </p>
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[color:var(--text-muted)] md:flex">
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Features
+            </a>
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Explore
+            </a>
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Community
+            </a>
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Pricing
+            </a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button variant="ghost" className="hidden sm:inline-flex">
+              Sign In
+            </Button>
+            <Button variant="default" className="hidden sm:inline-flex">
+              Get Started
+            </Button>
           </div>
-        </div>
-        <nav className="hidden items-center gap-10 text-sm text-[color:var(--wave-teal)] lg:flex">
-          <a className="transition hover:text-[color:var(--wave-ink)]" href="#features">
-            Features
-          </a>
-          <a className="transition hover:text-[color:var(--wave-ink)]" href="#flow">
-            Flow
-          </a>
-          <a className="transition hover:text-[color:var(--wave-ink)]" href="#board">
-            Crew board
-          </a>
-          <a className="transition hover:text-[color:var(--wave-ink)]" href="#waitlist">
-            Waitlist
-          </a>
-        </nav>
-        <div className="hidden items-center gap-3 lg:flex">
-          <Button variant="ghost">Sign in</Button>
-          <Button variant="glow">Join waitlist</Button>
         </div>
       </header>
 
-      <main className="relative z-10">
-        <section className="hero mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-6 lg:grid-cols-[1.05fr_0.95fr] lg:pt-20">
-          <div data-reveal>
-            <Badge className="mb-6">Private beta</Badge>
-            <h1 className="text-4xl leading-[1.05] tracking-[-0.02em] md:text-6xl">
-              Turn any group chat into a plan in minutes. Ride the{" "}
-              <span className="text-[color:var(--wave-red)]">GoWavy</span>.
-            </h1>
-            <p className="mt-6 text-lg text-[color:var(--wave-teal)]">
-              GoWavy is the vibe-first planner for nights out. Drop a mood,
-              invite the crew, keep the budget tight, and get moving fast.
-            </p>
-            <form
-              className="mt-8 flex w-full flex-col gap-3 sm:flex-row"
-              onSubmit={(event) => event.preventDefault()}
-            >
-              <Input
-                type="email"
-                placeholder="you@domain.com"
-                aria-label="Email address"
-              />
-              <Button variant="glow" size="lg" className="sm:w-auto">
-                Join the waitlist
-              </Button>
-            </form>
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[color:rgba(107,144,128,0.75)]">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Play className="h-4 w-4" />
-                    See the flow
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>See the GoWavy flow</DialogTitle>
-                    <DialogDescription>
-                      A quick look at how crews move from vibe to venue.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {flowSteps.map((step, index) => (
-                      <div
-                        key={step.title}
-                        className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)] p-4"
-                      >
-                        <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
-                          Step {String(index + 1).padStart(2, "0")}
-                        </p>
-                        <p className="mt-2 text-sm font-semibold text-[color:var(--wave-ink)]">
-                          {step.title}
-                        </p>
-                        <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
-                          {step.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <DialogFooter showCloseButton>
-                    <Button variant="glow" className="gap-2">
-                      Request beta
+      <main className="mesh-gradient min-h-screen px-6 pb-20 pt-32">
+        <section className="mx-auto mb-12 max-w-4xl text-center">
+          <Badge className="mb-6 rounded-full border-[color:var(--border-strong)] bg-[color:var(--surface-2)] text-[color:var(--wave-teal)]">
+            <Sparkles className="h-3 w-3" />
+            The Future of Hanging Out
+          </Badge>
+          <h1 className="text-4xl font-semibold leading-tight md:text-6xl">
+            Plan the perfect hangout or trip — powered by{" "}
+            <span className="bg-gradient-to-r from-[color:var(--wave-teal)] via-[color:var(--wave-blue)] to-[color:var(--wave-red)] bg-clip-text text-transparent">
+              AI
+            </span>
+            .
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-[color:var(--text-muted)]">
+            Skip the endless group chats. Tell us your vibe, and let our
+            wave-checked AI craft your next unforgettable memory in seconds.
+          </p>
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button variant="glow" size="lg" className="w-full sm:w-auto">
+              <Sparkles className="h-4 w-4" />
+              Start Planning
+            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Play className="h-4 w-4" />
+                  Watch Demo
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>See GoWavy in action</DialogTitle>
+                  <DialogDescription>
+                    A quick peek at how your crew goes from vibe to venue.
+                  </DialogDescription>
+                </DialogHeader>
+                <Card className="border-[color:var(--border-soft)] bg-[color:var(--surface-1)]">
+                  <CardHeader>
+                    <CardTitle className="text-base">Tonight's plan</CardTitle>
+                    <CardDescription>
+                      AI is stitching together a coastal chill itinerary.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-[color:var(--text-muted)]">
+                    <div className="rounded-none border border-[color:var(--border-soft)] bg-[color:var(--surface-2)] px-4 py-3">
+                      Sunset gelato + boardwalk stroll
+                    </div>
+                    <div className="rounded-none border border-[color:var(--border-soft)] bg-[color:var(--surface-2)] px-4 py-3">
+                      Rooftop breeze at 8:15 PM
+                    </div>
+                    <div className="rounded-none border border-[color:var(--border-soft)] bg-[color:var(--surface-2)] px-4 py-3">
+                      Budget cap locked at $28 per person
+                    </div>
+                  </CardContent>
+                  <CardFooter className="border-t border-[color:var(--border-soft)]">
+                    <Button variant="glow" className="ml-auto">
+                      Build my plan
                       <ArrowRight className="h-4 w-4" />
                     </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <span className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[var(--wave-teal)]" />
-                City-by-city rollouts
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[var(--wave-red)]" />
-                Invite-only beta
-              </span>
-            </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {heroStats.map((stat) => (
-                <Card
-                  key={stat.label}
-                  className="gap-2 border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] py-4"
-                >
-                  <CardContent className="px-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
-                      {stat.label}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-[color:var(--wave-ink)]">
-                      {stat.value}
-                    </p>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 text-sm text-[color:var(--text-muted)]">
+            <div className="flex -space-x-2">
+              {avatars.map((avatar) => (
+                <img
+                  key={avatar}
+                  src={avatar}
+                  alt="User avatar"
+                  className="h-8 w-8 rounded-full border-2 border-[color:var(--wave-cream)] object-cover"
+                />
               ))}
             </div>
+            <span className="font-medium">Trusted by 50k+ travelers</span>
           </div>
+        </section>
 
-          <div className="relative flex items-center justify-center" data-reveal>
-            <div className="hero-orb absolute inset-4 rounded-full bg-[color:var(--wave-teal)] glow-ring animate-float-slower" />
-            <Card className="relative z-10 w-full max-w-md border-[color:rgba(246,247,235,0.6)] bg-[color:rgba(246,247,235,0.9)] shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)] backdrop-blur">
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
+        <section className="mx-auto w-full max-w-5xl">
+          <Card className="glass-panel relative overflow-hidden rounded-[2.5rem] border-[color:var(--border-soft)] p-0 shadow-[0_50px_140px_-110px_var(--shadow-strong)]">
+            <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[color:var(--wave-teal)]/20 blur-[120px]" />
+            <div className="absolute -bottom-16 -left-20 h-56 w-56 rounded-full bg-[color:var(--wave-red)]/20 blur-[120px]" />
+            <CardContent className="relative p-8 md:p-10">
+              <div className="grid gap-12 lg:grid-cols-2">
+                <div className="space-y-8">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
-                      Tonight's wave
-                    </p>
-                    <CardTitle className="mt-2 text-xl">Crew board</CardTitle>
-                    <CardDescription>8 friends synced � 4 voting</CardDescription>
+                    <label className="block text-xs font-bold uppercase tracking-[0.3em] text-[color:var(--text-muted)]">
+                      Choose Your Vibe
+                    </label>
+                    <div className="mt-4 grid grid-cols-3 gap-3 md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-5">
+                      {vibeOptions.map((vibe) => (
+                        <Button
+                          key={vibe.label}
+                          type="button"
+                          variant="outline"
+                          className={`h-auto flex-col gap-2 rounded-2xl px-2 py-4 text-[10px] font-bold uppercase tracking-[0.2em] ${
+                            vibe.active
+                              ? "border-[color:var(--border-strong)] bg-[color:var(--surface-3)] text-[color:var(--wave-ink)]"
+                              : "border-[color:var(--border-soft)] bg-[color:var(--surface-2)] text-[color:var(--wave-teal)]"
+                          }`}
+                        >
+                          <span className="text-2xl">{vibe.emoji}</span>
+                          <span>{vibe.label}</span>
+                        </Button>
+                      ))}
+                    </div>
                   </div>
-                  <Badge className="bg-[color:rgba(246,247,235,0.9)] text-[color:rgba(107,144,128,0.75)]">
-                    Live
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {planTiles.map((tile) => (
-                  <div
-                    key={tile.title}
-                    className="flex items-center justify-between rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-4 py-3"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                        {tile.title}
-                      </p>
-                      <p className="text-xs text-[color:rgba(107,144,128,0.75)]">{tile.meta}</p>
-                    </div>
-                    <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-[color:var(--wave-teal)]">
-                      {tile.votes}
-                    </span>
-                  </div>
-                ))}
-              </CardContent>
-              <CardFooter className="border-t border-[color:rgba(107,144,128,0.25)] pt-4">
-                <div className="flex w-full items-center justify-between text-sm text-[color:var(--wave-teal)]">
-                  <span>Meet at 7:30 PM</span>
-                  <Button variant="outline" size="sm">
-                    Lock plan
-                  </Button>
-                </div>
-              </CardFooter>
-            </Card>
-            <div className="float-card absolute -right-6 top-6 hidden w-44 rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.9)] p-4 text-xs text-[color:var(--wave-teal)] shadow-[0_20px_60px_-40px_rgba(12,18,40,0.7)] backdrop-blur lg:block">
-              <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.6)]">
-                Next
-              </p>
-              <p className="mt-2 text-sm font-semibold text-[color:var(--wave-ink)]">
-                Ramen + arcade
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[var(--wave-red)]" />
-                <span>2 miles away</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-16" data-reveal>
-            <div className="ticker-track flex w-[180%] flex-nowrap gap-4 text-base font-semibold uppercase tracking-[0.12em] text-[color:var(--wave-teal)] md:text-lg">
-              {moodStrip.map((mood) => (
-                <span
-                  key={mood}
-                  className="rounded-md border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-6 py-3 shadow-[0_10px_30px_-20px_rgba(12,18,40,0.25)] backdrop-blur"
-                >
-                  {mood}
-                </span>
-              ))}
-            </div>
-            <p className="mt-4 text-sm uppercase tracking-[0.16em] text-[color:rgba(107,144,128,0.75)]">
-              Scroll to ride the wave of moods.
-            </p>
-        </section>
-
-        <section id="features" className="mx-auto max-w-6xl px-6 py-20">
-          <div className="flex flex-col gap-4" data-reveal>
-            <Badge>Why GoWavy</Badge>
-            <h2 className="text-3xl md:text-4xl">
-              The shortest path from "what should we do?" to "we're on the way".
-            </h2>
-            <p className="max-w-2xl text-lg text-[color:var(--wave-teal)]">
-              We built GoWavy to make group planning feel effortless. Less
-              scrolling, more showing up.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {featureCards.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <Card
-                  key={feature.title}
-                  className="h-full border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
-                  data-reveal
-                >
-                  <CardHeader className="gap-4">
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-none ${feature.accent} text-white shadow-lg`}
-                    >
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{feature.title}</CardTitle>
-                      <CardDescription className="mt-2 text-sm">
-                        {feature.description}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
-                </Card>
-              );
-            })}
-          </div>
-        </section>
-
-        <section id="flow" className="mx-auto max-w-6xl px-6 py-20">
-          <div className="grid gap-10 lg:grid-cols-[0.45fr_0.55fr]">
-            <div data-reveal>
-              <Badge>Flow</Badge>
-              <h2 className="mt-4 text-3xl md:text-4xl">
-                Three taps to get everyone moving.
-              </h2>
-              <p className="mt-4 text-lg text-[color:var(--wave-teal)]">
-                GoWavy keeps the vibe front and center while quietly managing
-                the logistics behind the scenes.
-              </p>
-              <div className="mt-8 grid gap-4">
-                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
-                  <CalendarCheck className="h-4 w-4 text-[var(--wave-teal)]" />
-                  <span>Auto-sync availability as votes land.</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
-                  <MessageCircle className="h-4 w-4 text-[var(--wave-blue)]" />
-                  <span>Short reactions replace long debates.</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-[color:var(--wave-teal)]">
-                  <MapPin className="h-4 w-4 text-[var(--wave-red)]" />
-                  <span>Routes update to keep everyone nearby.</span>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-4" data-reveal>
-              {flowSteps.map((step, index) => (
-                <Card
-                  key={step.title}
-                  className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
-                >
-                  <CardHeader className="flex flex-row items-start gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--wave-ink)] text-sm font-semibold text-white">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{step.title}</CardTitle>
-                      <CardDescription className="mt-2">
-                        {step.description}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="rounded-none bg-[var(--wave-ink)]/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
-                      {step.meta}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="board" className="mx-auto max-w-6xl px-6 py-20">
-          <div className="grid gap-10 lg:grid-cols-[0.55fr_0.45fr]">
-            <div className="space-y-6" data-reveal>
-              <Badge>Crew board</Badge>
-              <h2 className="text-3xl md:text-4xl">
-                Everyone feels heard. Nobody gets stuck.
-              </h2>
-              <p className="text-lg text-[color:var(--wave-teal)]">
-                Watch reactions stack, see the top picks float, and lock the
-                perfect option together.
-              </p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]">
-                  <CardHeader>
-                    <CardTitle className="text-sm">Live reactions</CardTitle>
-                    <CardDescription>
-                      Emoji votes and instant feedback keep everyone aligned.
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-                <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]">
-                  <CardHeader>
-                    <CardTitle className="text-sm">Smart meetups</CardTitle>
-                    <CardDescription>
-                      Auto-suggest the midpoint that saves the most time.
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
-              <Button variant="outline" className="gap-2">
-                Preview the board
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="relative" data-reveal>
-              <Card className="border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)] p-6">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                    Friday night board
-                  </p>
-                  <span className="text-xs text-[color:rgba(107,144,128,0.75)]">8 friends</span>
-                </div>
-                <div className="mt-4 space-y-3">
-                  {[
-                    "Sunset gelato",
-                    "Rooftop breeze",
-                    "Night market",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center justify-between rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.78)] px-4 py-3"
-                    >
-                      <span className="text-sm text-[color:var(--wave-teal)]">{item}</span>
-                      <span className="rounded-full bg-[var(--wave-teal)]/15 px-3 py-1 text-xs font-semibold text-[color:var(--wave-teal)]">
-                        72% voted
+                  <div>
+                    <div className="mb-4 flex items-center justify-between">
+                      <label className="text-xs font-bold uppercase tracking-[0.3em] text-[color:var(--text-muted)]">
+                        Budget Range
+                      </label>
+                      <span className="text-sm font-bold text-[color:var(--wave-teal)]">
+                        $50 - $250
                       </span>
                     </div>
-                  ))}
+                    <input
+                      type="range"
+                      min="10"
+                      max="1000"
+                      defaultValue="250"
+                      className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-[color:var(--border-soft)] accent-[color:var(--wave-teal)]"
+                    />
+                    <div className="mt-2 flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--text-muted)]">
+                      <span>Budget Friendly</span>
+                      <span>Luxury</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-6 rounded-none bg-[var(--wave-ink)]/90 px-4 py-3 text-xs text-white">
-                  Plan locked. Share ETA with the crew.
-                </div>
-              </Card>
-              <div className="absolute -right-6 -top-6 hidden h-24 w-24 rounded-full border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] shadow-[0_20px_60px_-40px_rgba(12,18,40,0.6)] backdrop-blur lg:block" />
-            </div>
-          </div>
-        </section>
 
-        <section className="mx-auto max-w-6xl px-6 py-20" data-reveal>
-          <div className="flex flex-col gap-4">
-            <Badge>Love notes</Badge>
-            <h2 className="text-3xl md:text-4xl">
-              Small crews, big energy.
-            </h2>
-            <p className="max-w-2xl text-lg text-[color:var(--wave-teal)]">
-              Early testers are already shaving hours off planning and keeping
-              the vibe high.
-            </p>
-          </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <Card
-                key={testimonial.name}
-                className="h-full border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.9)]"
-              >
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-[color:var(--wave-teal)]">"{testimonial.quote}"</p>
+                <div className="space-y-8">
                   <div>
-                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                      {testimonial.name}
-                    </p>
-                    <p className="text-xs text-[color:rgba(107,144,128,0.75)]">{testimonial.role}</p>
+                    <label className="block text-xs font-bold uppercase tracking-[0.3em] text-[color:var(--text-muted)]">
+                      Where to?
+                    </label>
+                    <div className="relative mt-4">
+                      <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--text-muted)]" />
+                      <Input
+                        placeholder="Enter city or 'Near Me'"
+                        className="pl-10 pr-20"
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        className="absolute right-2 top-1/2 h-8 -translate-y-1/2 px-3 text-[10px] font-bold uppercase tracking-[0.2em]"
+                      >
+                        Auto
+                      </Button>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <section id="waitlist" className="mx-auto max-w-6xl px-6 py-24">
-          <div
-            className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:rgba(246,247,235,0.95)] p-10 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.6)]"
-            data-reveal
-          >
-            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div>
-                <Badge>Waitlist</Badge>
-                <h2 className="mt-4 text-3xl md:text-4xl">
-                  Ready to ride the wave with your crew?
-                </h2>
-                <p className="mt-4 text-lg text-[color:var(--wave-teal)]">
-                  Get early access, invite friends, and help shape the next
-                  era of nights out.
-                </p>
-                <form
-                  className="mt-6 flex flex-col gap-3 sm:flex-row"
-                  onSubmit={(event) => event.preventDefault()}
-                >
-                  <Input
-                    type="email"
-                    placeholder="email@domain.com"
-                    aria-label="Email address"
-                  />
-                  <Button variant="glow" size="lg">
-                    Join waitlist
+                  <Card className="border-[color:var(--border-strong)] bg-[color:var(--surface-2)]">
+                    <CardHeader className="flex flex-row items-center gap-2 px-6 pb-2">
+                      <Sparkles className="h-4 w-4 text-[color:var(--wave-teal)]" />
+                      <CardTitle className="text-sm text-[color:var(--wave-teal)]">
+                        AI Insights
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0 text-sm italic text-[color:var(--text-muted)]">
+                      "Scanning the best breeze-heavy spots... I found hidden
+                      seaside cafes and panoramic sky decks for your chill
+                      session."
+                    </CardContent>
+                  </Card>
+                  <Button variant="glow" size="lg" className="w-full text-lg">
+                    Generate My Plan
+                    <ArrowRight className="h-5 w-5" />
                   </Button>
-                </form>
-                <p className="mt-3 text-xs text-[color:rgba(107,144,128,0.75)]">
-                  No spam. Just a heads up when your city opens.
-                </p>
-              </div>
-              <div className="rounded-none border border-[color:rgba(107,144,128,0.25)] bg-[color:var(--wave-cream)] p-6">
-                <p className="text-xs uppercase tracking-[0.2em] text-[color:rgba(107,144,128,0.75)]">
-                  Beta preview
-                </p>
-                <div className="mt-6 space-y-4">
-                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
-                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                      Mood: Rooftop breeze
-                    </p>
-                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
-                      4 spots, 10 min walk, $24 cap
-                    </p>
-                  </div>
-                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
-                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                      Crew sync
-                    </p>
-                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
-                      5 of 7 friends confirmed
-                    </p>
-                  </div>
-                  <div className="rounded-none border border-[color:rgba(246,247,235,0.7)] bg-[color:rgba(246,247,235,0.78)] p-4">
-                    <p className="text-sm font-semibold text-[color:var(--wave-ink)]">
-                      Auto itinerary
-                    </p>
-                    <p className="mt-2 text-xs text-[color:var(--wave-teal)]">
-                      Meet at 7:45 PM, split with one tap
-                    </p>
-                  </div>
                 </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mx-auto mt-24 grid w-full max-w-7xl gap-8 md:grid-cols-3">
+          {trendingTrips.map((trip, index) => (
+            <Card
+              key={trip.title}
+              className={`group relative overflow-hidden rounded-3xl border-[color:var(--border-soft)] bg-[color:var(--surface-1)] p-0 ${
+                index === 1 ? "md:mt-12" : ""
+              }`}
+            >
+              <div className="absolute inset-0 bg-[color:var(--wave-teal)]/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <CardContent className="relative p-0">
+                <div className="aspect-[4/5] overflow-hidden">
+                  <img
+                    src={trip.image}
+                    alt={trip.title}
+                    className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--wave-navy)] via-transparent to-transparent opacity-90" />
+                <div className="absolute bottom-6 left-6 space-y-2">
+                  <Badge className={`border-transparent ${trip.tagClass}`}>
+                    {trip.tag}
+                  </Badge>
+                  <h4 className="text-xl font-semibold text-white">
+                    {trip.title}
+                  </h4>
+                  <p className="text-sm text-white/70">Perfect for: {trip.vibe}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+
+        <section className="mx-auto mt-32 w-full max-w-5xl border-t border-[color:var(--border-soft)] pt-16">
+          <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <div className="text-3xl font-semibold text-[color:var(--wave-teal)] md:text-4xl">
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-[color:var(--text-muted)]">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-[color:rgba(107,144,128,0.25)] px-6 py-8 text-sm text-[color:rgba(107,144,128,0.75)]">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[color:rgba(246,247,235,0.9)] ring-1 ring-[color:rgba(246,247,235,0.6)]">
+      <footer className="border-t border-[color:var(--border-soft)] bg-[color:var(--surface-1)]/60 px-6 py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[color:var(--wave-teal)]/20">
               <img
                 src="/GoWavy_LOGO.png"
                 alt="GoWavy logo"
                 className="h-6 w-6 rounded-full object-cover"
               />
             </div>
-            <span>GoWavy</span>
+            <span className="text-lg font-semibold">GoWavy AI</span>
           </div>
-          <div className="flex flex-wrap items-center gap-6">
-            <span>hello@gowavy.com</span>
-            <span>Launching 2026</span>
+          <div className="flex flex-wrap items-center gap-6 text-sm text-[color:var(--text-muted)]">
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Privacy Policy
+            </a>
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Terms of Service
+            </a>
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
+              Contact
+            </a>
+          </div>
+          <div className="text-xs text-[color:var(--text-muted)]">
+            © 2026 GoWavy AI. All rights reserved.
           </div>
         </div>
       </footer>

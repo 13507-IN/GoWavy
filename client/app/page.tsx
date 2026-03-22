@@ -22,14 +22,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { ArrowRight, MapPin, Moon, Play, Sparkles, Sun } from "lucide-react";
+import { ArrowRight, MapPin, Moon, Play, Sparkles, Sun, User } from "lucide-react";
 
 const vibeOptions = [
-  { label: "Chill", emoji: "🧊", active: true },
-  { label: "Party", emoji: "🥳" },
-  { label: "Romantic", emoji: "❤️" },
-  { label: "Adventure", emoji: "🏔️" },
-  { label: "Healing", emoji: "🧘" },
+  { label: "Chill", emoji: "🧊", id: "chill" },
+  { label: "Party", emoji: "🥳", id: "energy" },
+  { label: "Romantic", emoji: "❤️", id: "chill" },
+  { label: "Adventure", emoji: "🏔️", id: "energy" },
+  { label: "Healing", emoji: "🧘", id: "chill" },
 ];
 
 const trendingTrips = [
@@ -75,6 +75,9 @@ const avatars = [
 export default function Home() {
   const router = useRouter();
   const [isDark, setIsDark] = useState(false);
+  const [vibe, setVibe] = useState("chill");
+  const [budget, setBudget] = useState("250");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("gowavy-theme");
@@ -115,17 +118,17 @@ export default function Home() {
             </span>
           </div>
           <nav className="hidden items-center gap-8 text-sm font-medium text-[color:var(--text-muted)] md:flex">
-            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
-              Features
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="/planner">
+              Planner
             </a>
-            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
-              Explore
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#trending">
+              Trending
             </a>
-            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
-              Community
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#stats">
+              Stats
             </a>
-            <a className="transition hover:text-[color:var(--wave-ink)]" href="#">
-              Pricing
+            <a className="transition hover:text-[color:var(--wave-ink)]" href="#footer">
+              Support
             </a>
           </nav>
           <div className="flex items-center gap-3">
@@ -136,6 +139,14 @@ export default function Home() {
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.push("/profile")}
+              aria-label="Open profile"
+            >
+              <User className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
@@ -177,7 +188,7 @@ export default function Home() {
               variant="glow"
               size="lg"
               className="w-full sm:w-auto"
-              onClick={() => router.push("/sign-up")}
+              onClick={() => router.push("/planner")}
             >
               <Sparkles className="h-4 w-4" />
               Start Planning
@@ -218,7 +229,7 @@ export default function Home() {
                     <Button
                       variant="glow"
                       className="ml-auto"
-                      onClick={() => router.push("/sign-up")}
+                      onClick={() => router.push("/planner")}
                     >
                       Build my plan
                       <ArrowRight className="h-4 w-4" />
@@ -255,19 +266,20 @@ export default function Home() {
                       Choose Your Vibe
                     </label>
                     <div className="mt-4 grid grid-cols-3 gap-3 md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-5">
-                      {vibeOptions.map((vibe) => (
+                      {vibeOptions.map((v) => (
                         <Button
-                          key={vibe.label}
+                          key={v.label}
                           type="button"
                           variant="outline"
+                          onClick={() => setVibe(v.id)}
                           className={`h-auto flex-col gap-2 rounded-2xl px-2 py-4 text-[10px] font-bold uppercase tracking-[0.2em] ${
-                            vibe.active
+                            vibe === v.id
                               ? "border-[color:var(--border-strong)] bg-[color:var(--surface-3)] text-[color:var(--wave-ink)]"
                               : "border-[color:var(--border-soft)] bg-[color:var(--surface-2)] text-[color:var(--wave-teal)]"
                           }`}
                         >
-                          <span className="text-2xl">{vibe.emoji}</span>
-                          <span>{vibe.label}</span>
+                          <span className="text-2xl">{v.emoji}</span>
+                          <span>{v.label}</span>
                         </Button>
                       ))}
                     </div>
@@ -278,14 +290,15 @@ export default function Home() {
                         Budget Range
                       </label>
                       <span className="text-sm font-bold text-[color:var(--wave-teal)]">
-                        $50 - $250
+                        ${budget}
                       </span>
                     </div>
                     <input
                       type="range"
                       min="10"
                       max="1000"
-                      defaultValue="250"
+                      value={budget}
+                      onChange={(e) => setBudget(e.target.value)}
                       className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-[color:var(--border-soft)] accent-[color:var(--wave-teal)]"
                     />
                     <div className="mt-2 flex justify-between text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--text-muted)]">
@@ -305,6 +318,8 @@ export default function Home() {
                       <Input
                         placeholder="Enter city or 'Near Me'"
                         className="pl-10 pr-20"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
                       />
                       <Button
                         type="button"
@@ -333,9 +348,9 @@ export default function Home() {
                     variant="glow"
                     size="lg"
                     className="w-full text-lg"
-                    onClick={() => router.push("/sign-up")}
+                    onClick={() => router.push(`/planner?vibe=${encodeURIComponent(vibe)}&budget=${encodeURIComponent(budget)}&location=${encodeURIComponent(location)}`)}
                   >
-                    Generate My Plan
+                    Go to Planner
                     <ArrowRight className="h-5 w-5" />
                   </Button>
                 </div>
@@ -344,7 +359,10 @@ export default function Home() {
           </Card>
         </section>
 
-        <section className="mx-auto mt-24 grid w-full max-w-7xl gap-8 md:grid-cols-3">
+        <section
+          id="trending"
+          className="mx-auto mt-24 grid w-full max-w-7xl gap-8 md:grid-cols-3"
+        >
           {trendingTrips.map((trip, index) => (
             <Card
               key={trip.title}
@@ -376,7 +394,10 @@ export default function Home() {
           ))}
         </section>
 
-        <section className="mx-auto mt-32 w-full max-w-5xl border-t border-[color:var(--border-soft)] pt-16">
+        <section
+          id="stats"
+          className="mx-auto mt-32 w-full max-w-5xl border-t border-[color:var(--border-soft)] pt-16"
+        >
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.label}>
@@ -392,7 +413,10 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-[color:var(--border-soft)] bg-[color:var(--surface-1)]/60 px-6 py-12">
+      <footer
+        id="footer"
+        className="border-t border-[color:var(--border-soft)] bg-[color:var(--surface-1)]/60 px-6 py-12"
+      >
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[color:var(--wave-teal)]/20">
